@@ -1,6 +1,32 @@
 # Katyusha
 
-Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat
+<p align='center'>
+    <img src='panzer.jpg'/>
+</p>
+
+Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat. Tapi untuk saat ini baru optimasi CSS eksternal dan image eksternal.
+
+## Cara Menggunakan
+
+1. Buka [katyusha.html](build/katyusha.html)
+2. Letakkan **katyusha.html** itu di bawahnya `<head>`
+
+    Seperti ini:
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <!-- copas katyusha.html di sini -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        
+    </body>
+    </html>
+    ```
 
 ## Donate
 
