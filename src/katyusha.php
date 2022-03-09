@@ -2,16 +2,21 @@
 	<?php include $_SERVER['DOCUMENT_ROOT'] . '/localforage.min.js' ?>	
 </script>
 <script>
+	let versi = 'base'
+	if (typeof versiKatyusha != 'undefined') {
+		versi = versiKatyusha
+	}
+
 	window.addEventListener('DOMContentLoaded', () => {
 		const cssEksternal = document.querySelectorAll('link[rel=stylesheet]')
 		if (cssEksternal.length > 0) {
 			cssEksternal.forEach(css => {
-				localforage.getItem(css.href).then(x => {
+				localforage.getItem(`${css.href}-${versi}`).then(x => {
 					if (x){
 						css.outerHTML = `<style>${x}</style>`
 					} else {
 						fetch(css.href).then(x => x.text()).then(hasilnya => {
-							localforage.setItem(css.href, hasilnya)
+							localforage.setItem(`${css.href}-${versi}`, hasilnya)
 							css.outerHTML = `<style>${hasilnya}</style>`
 						}).catch(x => console.log(x))
 					}
@@ -22,7 +27,7 @@
 		const gambar = document.querySelectorAll('img')
 		if (gambar.length > 0){
 			gambar.forEach(gambarnya => {
-				localforage.getItem(gambarnya.src).then(x => {
+				localforage.getItem(`${gambarnya.src}-${versi}`).then(x => {
 					if (x){
 						gambarnya.src = x
 					} else {
@@ -31,7 +36,7 @@
 							reader.readAsDataURL(gambarFetch)
 							reader.addEventListener('load', x => {
 								const hasil = x.target.result
-								localforage.setItem(gambarnya.src, hasil)
+								localforage.setItem(`${gambarnya.src}-${versi}`, hasil)
 								gambarnya.src = hasil
 							})
 						}).catch(x => console.log(x))
@@ -44,8 +49,8 @@
 		if (semuaJs.length > 0){
 			semuaJs.forEach(js => {
 				if (js.hasAttribute('src')){
-					if (localStorage.getItem(js.src)){
-						const isinya = localStorage.getItem(js.src)
+					if (localStorage.getItem(`${js.src}-${versi}`)){
+						const isinya = localStorage.getItem(`${js.src}-${versi}`)
 						js.removeAttribute('src')
 						const semuaAttribute = [...js.attributes]
 						
@@ -57,7 +62,7 @@
 						js.parentNode.replaceChild(elemenBaru, js)
 					} else {
 						fetch(js.src).then(ambil => ambil.text()).then(ambil => {
-							localStorage.setItem(js.src, ambil)
+							localStorage.setItem(`${js.src}-${versi}`, ambil)
 
 							js.removeAttribute('src')
 							const semuaAttribute = [...js.attributes]
