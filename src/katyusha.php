@@ -26,7 +26,7 @@
 					if (x){
 						gambarnya.src = x
 					} else {
-						fetch(`https://scrappy-php.herokuapp.com/?url=${encodeURIComponent(gambarnya.src)}`).then(x => x.blob()).then(gambarFetch => {
+						fetch(gambarnya.src).then(x => x.blob()).then(gambarFetch => {
 							const reader = new FileReader
 							reader.readAsDataURL(gambarFetch)
 							reader.addEventListener('load', x => {
