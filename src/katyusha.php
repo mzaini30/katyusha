@@ -19,51 +19,6 @@
 			})
 		}
 
-		// const semuaJs = document.querySelectorAll('script')
-		// if (semuaJs.length > 0){
-		// 	semuaJs.forEach(js => {
-		// 		if (js.hasAttribute('src')){
-		// 			localforage.getItem(js.src).then(adaDiStorage => {
-		// 				if (adaDiStorage){
-		// 					js.removeAttribute('src')
-		// 					const semuaAttribute = [...js.attributes]
-							
-		// 					const elemenBaru = document.createElement('script')
-		// 					for (let z of semuaAttribute){
-		// 						elemenBaru.setAttribute(z.name, z.value)
-		// 					}
-		// 					elemenBaru.innerHTML = adaDiStorage
-		// 					js.parentNode.replaceChild(elemenBaru, js)
-		// 				} else {
-		// 					fetch(js.src).then(ambil => ambil.text()).then(ambil => {
-		// 						localforage.setItem(js.src, ambil)
-
-		// 						js.removeAttribute('src')
-		// 						const semuaAttribute = [...js.attributes]
-								
-		// 						const elemenBaru = document.createElement('script')
-		// 						for (let z of semuaAttribute){
-		// 							elemenBaru.setAttribute(z.name, z.value)
-		// 						}
-		// 						elemenBaru.innerHTML = ambil
-		// 						js.parentNode.replaceChild(elemenBaru, js)
-		// 					})
-		// 				}
-		// 			})
-		// 		} else {
-		// 			const semuaAttribute = [...js.attributes]
-								
-		// 			const elemenBaru = document.createElement('script')
-		// 			for (let z of semuaAttribute){
-		// 				elemenBaru.setAttribute(z.name, z.value)
-		// 			}
-		// 			elemenBaru.innerHTML = js.innerHTML
-		// 			js.parentNode.replaceChild(elemenBaru, js)
-		// 		}
-
-		// 	})
-		// }
-
 		const gambar = document.querySelectorAll('img')
 		if (gambar.length > 0){
 			gambar.forEach(gambarnya => {
@@ -82,6 +37,50 @@
 						}).catch(x => console.log(x))
 					}
 				})
+			})
+		}
+
+		const semuaJs = document.querySelectorAll('script')
+		if (semuaJs.length > 0){
+			semuaJs.forEach(js => {
+				if (js.hasAttribute('src')){
+					if (localStorage.getItem(js.src)){
+						const isinya = localStorage.getItem(js.src)
+						js.removeAttribute('src')
+						const semuaAttribute = [...js.attributes]
+						
+						const elemenBaru = document.createElement('script')
+						for (let z of semuaAttribute){
+							elemenBaru.setAttribute(z.name, z.value)
+						}
+						elemenBaru.innerHTML = isinya
+						js.parentNode.replaceChild(elemenBaru, js)
+					} else {
+						fetch(js.src).then(ambil => ambil.text()).then(ambil => {
+							localStorage.setItem(js.src, ambil)
+
+							js.removeAttribute('src')
+							const semuaAttribute = [...js.attributes]
+							
+							const elemenBaru = document.createElement('script')
+							for (let z of semuaAttribute){
+								elemenBaru.setAttribute(z.name, z.value)
+							}
+							elemenBaru.innerHTML = ambil
+							js.parentNode.replaceChild(elemenBaru, js)
+						})
+					}
+				} else {
+					const semuaAttribute = [...js.attributes]
+								
+					const elemenBaru = document.createElement('script')
+					for (let z of semuaAttribute){
+						elemenBaru.setAttribute(z.name, z.value)
+					}
+					elemenBaru.innerHTML = js.innerHTML
+					js.parentNode.replaceChild(elemenBaru, js)
+				}
+
 			})
 		}
 	})

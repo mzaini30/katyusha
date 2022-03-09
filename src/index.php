@@ -19,13 +19,9 @@
 	</div>
 	<script data-nama='satu' data-script='dua' data-src='tiga' src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		try {
-			$('h1').css({
-				'font-style': 'italic'
-			})
-		} catch(x){
-			console.log(x)
-		}
+		$('h1').css({
+			'font-style': 'italic'
+		})
 	</script>
 </body>
 </html>
