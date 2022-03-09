@@ -8,7 +8,7 @@ Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat. Tap
 
 ## Cara Menggunakan
 
-1. Buka [katyusha.html](build/katyusha.html)
+1. Buka [katyusha.html](https://raw.githubusercontent.com/mzaini30/katyusha/master/build/katyusha.html)
 2. Letakkan **katyusha.html** itu di bawahnya `<head>`
 
     Seperti ini:
