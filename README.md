@@ -4,7 +4,7 @@
     <img src='panzer.jpg'/>
 </p>
 
-Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat. Tapi untuk saat ini baru optimasi CSS eksternal dan image eksternal.
+Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat.
 
 ## Cara Menggunakan
 
