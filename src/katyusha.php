@@ -7,6 +7,12 @@
 		versi = versiKatyusha
 	}
 
+	let ringkasan = {
+		versi: '',
+		link: []
+	}
+	ringkasan.versi = versi
+
 	window.addEventListener('DOMContentLoaded', () => {
 		const cssEksternal = document.querySelectorAll('link[rel=stylesheet]')
 		if (cssEksternal.length > 0) {
@@ -31,7 +37,7 @@
 					if (x){
 						gambarnya.src = x
 					} else {
-						fetch(gambarnya.src).then(x => x.blob()).then(gambarFetch => {
+						fetch(`https://scrappy-php.herokuapp.com/?url=${encodeURIComponent(gambarnya.src)}`).then(x => x.blob()).then(gambarFetch => {
 							const reader = new FileReader
 							reader.readAsDataURL(gambarFetch)
 							reader.addEventListener('load', x => {
@@ -49,6 +55,8 @@
 		if (semuaJs.length > 0){
 			semuaJs.forEach(js => {
 				if (js.hasAttribute('src')){
+					ringkasan.link = [...ringkasan.link, `${js.src}-${versi}`]
+					
 					if (localStorage.getItem(`${js.src}-${versi}`)){
 						const isinya = localStorage.getItem(`${js.src}-${versi}`)
 						js.removeAttribute('src')
@@ -87,6 +95,17 @@
 				}
 
 			})
+
+			// bersih-bersih localStorage
+			if (localStorage.scriptKatyusha){
+				let scriptKatyusha = JSON.parse(localStorage.scriptKatyusha)
+				if (scriptKatyusha.versi != ringkasan.versi){
+					for (let x of scriptKatyusha.link){
+						localStorage.removeItem(x)
+					}
+				}
+			}
+			localStorage.scriptKatyusha = JSON.stringify(ringkasan)
 		}
 	})
 </script>

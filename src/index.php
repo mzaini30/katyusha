@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script>
+		const versiKatyusha = 1
+	</script>
 	<?php include $_SERVER['DOCUMENT_ROOT'] . '/katyusha.php' ?>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
