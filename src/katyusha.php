@@ -22,11 +22,11 @@
 						css.outerHTML = `<style>${x}</style>`
 					} else {
 						fetch(css.href).then(x => x.text()).then(hasilnya => {
-							localforage.setItem(`${css.href}-${versi}`, hasilnya)
+							localforage.setItem(`${css.href}-${versi}`, hasilnya).catch(x => console.log(x))
 							css.outerHTML = `<style>${hasilnya}</style>`
 						}).catch(x => console.log(x))
 					}
-				})
+				}).catch(x => console.log(x))
 			})
 		}
 
@@ -42,12 +42,12 @@
 							reader.readAsDataURL(gambarFetch)
 							reader.addEventListener('load', x => {
 								const hasil = x.target.result
-								localforage.setItem(`${gambarnya.src}-${versi}`, hasil)
+								localforage.setItem(`${gambarnya.src}-${versi}`, hasil).catch(x => console.log(x))
 								gambarnya.src = hasil
 							})
 						}).catch(x => console.log(x))
 					}
-				})
+				}).catch(x => console.log(x))
 			})
 		}
 
@@ -81,7 +81,7 @@
 							}
 							elemenBaru.innerHTML = ambil
 							js.parentNode.replaceChild(elemenBaru, js)
-						})
+						}).catch(x => console.log(x))
 					}
 				} else {
 					const semuaAttribute = [...js.attributes]
