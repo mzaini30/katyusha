@@ -81,8 +81,9 @@
 							const isinya = localStorage.getItem(`${js.src}-${versi}`)
 							buat(js, isinya)
 						} else {
-							let isinya = await fetch(js.src)
-							isinya = await isinya.text()
+							// let data = await fetch(el.src).then(x => x.text()).catch(x => console.log(x))
+
+							let isinya = await fetch(js.src).then(x => x.text()).catch(x => console.log(x))
 							if (isinya){
 								localStorage.setItem(`${js.src}-${versi}`, isinya)
 								buat(js, isinya)
