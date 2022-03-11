@@ -14,7 +14,7 @@
 	ringkasan.versi = versi
 
 	window.addEventListener('DOMContentLoaded', () => {
-		const cssEksternal = document.querySelectorAll('link[rel=stylesheet]')
+		const cssEksternal = document.querySelectorAll('link[rel=katyusha]')
 		if (cssEksternal.length > 0) {
 			cssEksternal.forEach(css => {
 				localforage.getItem(`${css.href}-${versi}`).then(x => {
@@ -30,19 +30,19 @@
 			})
 		}
 
-		const gambar = document.querySelectorAll('img')
+		const gambar = document.querySelectorAll('img[data-src]')
 		if (gambar.length > 0){
 			gambar.forEach(gambarnya => {
-				localforage.getItem(`${gambarnya.src}-${versi}`).then(x => {
+				localforage.getItem(`${gambarnya.dataset.src}-${versi}`).then(x => {
 					if (x){
 						gambarnya.src = x
 					} else {
-						fetch(`https://scrappy-php.herokuapp.com/?url=${encodeURIComponent(gambarnya.src)}`).then(x => x.blob()).then(gambarFetch => {
+						fetch(`https://scrappy-php.herokuapp.com/?url=${encodeURIComponent(gambarnya.dataset.src)}`).then(x => x.blob()).then(gambarFetch => {
 							const reader = new FileReader
 							reader.readAsDataURL(gambarFetch)
 							reader.addEventListener('load', x => {
 								const hasil = x.target.result
-								localforage.setItem(`${gambarnya.src}-${versi}`, hasil).catch(x => console.log(x))
+								localforage.setItem(`${gambarnya.dataset.src}-${versi}`, hasil).catch(x => console.log(x))
 								gambarnya.src = hasil
 							})
 						}).catch(x => console.log(x))
@@ -51,61 +51,67 @@
 			})
 		}
 
-		const semuaJs = document.querySelectorAll('script')
-		if (semuaJs.length > 0){
-			semuaJs.forEach(js => {
-				if (js.hasAttribute('src')){
-					ringkasan.link = [...ringkasan.link, `${js.src}-${versi}`]
-					
-					if (localStorage.getItem(`${js.src}-${versi}`)){
-						const isinya = localStorage.getItem(`${js.src}-${versi}`)
-						js.removeAttribute('src')
-						const semuaAttribute = [...js.attributes]
-						
-						const elemenBaru = document.createElement('script')
-						for (let z of semuaAttribute){
-							elemenBaru.setAttribute(z.name, z.value)
-						}
-						elemenBaru.innerHTML = isinya
-						js.parentNode.replaceChild(elemenBaru, js)
-					} else {
-						fetch(js.src).then(ambil => ambil.text()).then(ambil => {
-							localStorage.setItem(`${js.src}-${versi}`, ambil)
-
-							js.removeAttribute('src')
-							const semuaAttribute = [...js.attributes]
-							
-							const elemenBaru = document.createElement('script')
-							for (let z of semuaAttribute){
-								elemenBaru.setAttribute(z.name, z.value)
-							}
-							elemenBaru.innerHTML = ambil
-							js.parentNode.replaceChild(elemenBaru, js)
-						}).catch(x => console.log(x))
-					}
-				} else {
-					const semuaAttribute = [...js.attributes]
-								
-					const elemenBaru = document.createElement('script')
-					for (let z of semuaAttribute){
-						elemenBaru.setAttribute(z.name, z.value)
-					}
-					elemenBaru.innerHTML = js.innerHTML
-					js.parentNode.replaceChild(elemenBaru, js)
-				}
-
-			})
-
-			// bersih-bersih localStorage
-			if (localStorage.scriptKatyusha){
-				let scriptKatyusha = JSON.parse(localStorage.scriptKatyusha)
-				if (scriptKatyusha.versi != ringkasan.versi){
-					for (let x of scriptKatyusha.link){
-						localStorage.removeItem(x)
-					}
-				}
+		function buat(js, isinya){
+			js.removeAttribute('src')
+			if (js.type == 'katyushaModule') {
+				js.type = 'module'
+			} else {
+				js.removeAttribute('type')
 			}
-			localStorage.scriptKatyusha = JSON.stringify(ringkasan)
+
+			const semuaAttribute = [...js.attributes]
+			
+			const elemenBaru = document.createElement('script')
+			for (let z of semuaAttribute){
+				elemenBaru.setAttribute(z.name, z.value)
+			}
+			elemenBaru.innerHTML = isinya
+			js.parentNode.replaceChild(elemenBaru, js)
 		}
+
+		const semuaJs = document.querySelectorAll('script[type=katyusha], script[type=katyushaModule]')
+		async function olahJs(){
+			if (semuaJs.length > 0){
+				for (let js of semuaJs){
+				// semuaJs.forEach(js => {
+					if (js.hasAttribute('src')){
+						ringkasan.link = [...ringkasan.link, `${js.src}-${versi}`]
+						
+						if (localStorage.getItem(`${js.src}-${versi}`)){
+							const isinya = localStorage.getItem(`${js.src}-${versi}`)
+							buat(js, isinya)
+						} else {
+							let isinya = await fetch(js.src)
+							isinya = await isinya.text()
+							if (isinya){
+								localStorage.setItem(`${js.src}-${versi}`, isinya)
+								buat(js, isinya)
+							}
+
+							// fetch(js.src).then(ambil => ambil.text()).then(isinya => {
+							// 	localStorage.setItem(`${js.src}-${versi}`, isinya)
+							// 	buat(js, isinya)
+							// })
+						}
+					} else {
+						buat(js, js.innerHTML)
+					}
+
+				// })
+				}
+
+				// bersih-bersih localStorage
+				if (localStorage.scriptKatyusha){
+					let scriptKatyusha = JSON.parse(localStorage.scriptKatyusha)
+					if (scriptKatyusha.versi != ringkasan.versi){
+						for (let x of scriptKatyusha.link){
+							localStorage.removeItem(x)
+						}
+					}
+				}
+				localStorage.scriptKatyusha = JSON.stringify(ringkasan)
+			}
+		}
+		olahJs()
 	})
 </script>
