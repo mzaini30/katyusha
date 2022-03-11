@@ -1,8 +1,3 @@
-<style>
-	body {
-		display: none;
-	}
-</style>
 <script>
 	<?php include $_SERVER['DOCUMENT_ROOT'] . '/localforage.min.js' ?>	
 </script>
@@ -25,12 +20,10 @@
 				localforage.getItem(`${css.href}-${versi}`).then(x => {
 					if (x){
 						css.outerHTML = `<style>${x}</style>`
-						document.body.style.display = 'block'
 					} else {
 						fetch(css.href).then(x => x.text()).then(hasilnya => {
 							localforage.setItem(`${css.href}-${versi}`, hasilnya).catch(x => console.log(x))
 							css.outerHTML = `<style>${hasilnya}</style>`
-							document.body.style.display = 'block'
 						}).catch(x => console.log(x))
 					}
 				}).catch(x => console.log(x))
