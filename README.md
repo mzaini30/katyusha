@@ -8,6 +8,8 @@ Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat.
 
 ## Cara Menggunakan
 
+### Import Katyusha
+
 1. Buka [katyusha.html](https://raw.githubusercontent.com/mzaini30/katyusha/master/build/katyusha.html)
 2. Letakkan **katyusha.html** itu di bawahnya `<head>`
 
@@ -27,6 +29,30 @@ Tampilkan CSS eksternal, JS eksternal, image, dan aset lainnya dengan cepat.
     </body>
     </html>
     ```
+
+### Menjalankan Katyusha pada CSS external, JS external, dan image
+
+Format Katyusha untuk CSS external:
+
+```html
+<link rel="katyusha" type="text/css" href="foo.css">
+```
+
+Format Katyusha untuk JS external:
+
+```html
+<!-- JS external -->
+<script type="katyusha" src="foo.js"></script>
+
+<!-- JS external type module -->
+<script type="katyushaModule" src="foo.js"></script>
+```
+
+Format Katyusha untuk image:
+
+```html
+<img data-src="foo.jpg">
+```
 
 ## Konfigurasi
 
